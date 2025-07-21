@@ -13,7 +13,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: read # This is required for actions/checkout
+      contents: read
 
     steps:
       - uses: actions/checkout@v4
@@ -44,8 +44,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     permissions:
-      id-token: write # Required for requesting the JWT
-      contents: read  # Required for actions/checkout
+      id-token: write
+      contents: read
 
     steps:
       - name: Download artifact from build job
@@ -63,6 +63,10 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_22A8472C6A3C4BA8A8D8D9ADAB71AC6D }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_3216219C361A4989AE7CE89CFDDA3150 }}
 
+      - name: Stop App Service
+        run: az webapp stop --name Adople-landingpage-UI-UX --resource-group YOUR_RESOURCE_GROUP
+        shell: bash
+
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
@@ -70,3 +74,7 @@ jobs:
           app-name: 'Adople-landingpage-UI-UX'
           slot-name: 'Production'
           package: .
+
+      - name: Start App Service
+        run: az webapp start --name Adople-landingpage-UI-UX --resource-group YOUR_RESOURCE_GROUP
+        shell: bash
