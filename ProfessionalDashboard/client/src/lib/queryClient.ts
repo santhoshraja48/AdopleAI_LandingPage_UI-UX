@@ -55,3 +55,5 @@ export const queryClient = new QueryClient({
     },
   },
 });
+
+export const API_BASE_URL = "https://adople-landingpage-ui-ux-dzhvb7gycvchfdc6.centralus-01.azurewebsites.net";

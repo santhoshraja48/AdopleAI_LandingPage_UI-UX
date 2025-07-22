@@ -10,6 +10,7 @@ import axios from 'axios';
 import { CreditCard, CheckCircle, AlertCircle, Loader, Lock, Shield } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Footer from '../components/Footer';
+import { API_BASE_URL } from '../lib/queryClient';
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || 'pk_test_51RmG6PIpFCZpCwt5u8PwwmJtt2fGoAy8vall9IfUZ4N6Ml7jjM0A2gZImQFNZY27uIBfIBtMVPgCay0AarVvFloK00y5NHeSUN');
 
@@ -57,7 +58,7 @@ const CheckoutForm = () => {
     setStatus(null);
 
     try {
-      const res = await axios.post('/api/create-payment-intent', {
+      const res = await axios.post(`${API_BASE_URL}/api/create-payment-intent`, {
         amount: 1000,
       });
 
@@ -82,7 +83,7 @@ const CheckoutForm = () => {
       } else {
         if (result.paymentIntent.status === 'succeeded') {
           try {
-            await axios.post('/api/register-user', {
+            await axios.post(`${API_BASE_URL}/api/register-user`, {
               email,
               password,
             });
